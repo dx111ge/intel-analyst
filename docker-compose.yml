@@ -1,0 +1,38 @@
+services:
+  engram:
+    build:
+      context: .
+      dockerfile: docker/engram/Dockerfile
+    ports:
+      - "3030:3030"
+    volumes:
+      - engram-data:/data
+    environment:
+      - ENGRAM_SEARXNG_URL=http://searxng:8080
+      - ENGRAM_LLM_ENDPOINT=http://host.docker.internal:11434/v1/chat/completions
+    depends_on:
+      - searxng
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/dashboard/Dockerfile
+    ports:
+      - "8888:80"
+    depends_on:
+      - engram
+    restart: unless-stopped
+
+  searxng:
+    image: searxng/searxng:latest
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./docker/searxng/settings.yml:/etc/searxng/settings.yml:ro
+    environment:
+      - SEARXNG_SECRET=engram-intel-local
+    restart: unless-stopped
+
+volumes:
+  engram-data:

@@ -1,0 +1,16 @@
+{
+  "name": "engram-intel",
+  "type": "module",
+  "description": "Geopolitical intelligence engine -- compiled to WASM",
+  "version": "0.1.0",
+  "files": [
+    "engram_intel_bg.wasm",
+    "engram_intel.js",
+    "engram_intel.d.ts"
+  ],
+  "main": "engram_intel.js",
+  "types": "engram_intel.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
